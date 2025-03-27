@@ -47,6 +47,19 @@ class MCPClient:
         """Load server configuration from a JSON file."""
         with open(config_path, "r") as config_file:
             self.config = json.load(config_file)
+            
+        # Replace environment variable placeholders in the config
+        for server_name, server_config in self.config["mcpServers"].items():
+            if "env" in server_config:
+                for env_key, env_value in server_config["env"].items():
+                    # If the value is a placeholder (e.g., "BRAVE_API_KEY"), replace it with the actual env value
+                    if env_value == env_key or env_value.startswith("$"):
+                        actual_value = os.environ.get(env_key)
+                        if actual_value:
+                            server_config["env"][env_key] = actual_value
+                        else:
+                            logging.warning(f"Environment variable {env_key} not found for server {server_name}")
+                            
         self.servers = [MCPServer(name, config) for name, config in self.config["mcpServers"].items()]
         logging.info(f"Loaded servers: {[type(s).__name__ for s in self.servers]}")
         logging.info(f"Server names: {[s.name for s in self.servers]}")
