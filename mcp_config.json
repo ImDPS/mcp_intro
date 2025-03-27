@@ -1,0 +1,26 @@
+{
+    "mcpServers": {
+        "filesystem": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-filesystem",
+              "/Users/cropway/DurgendraWorkspace/Tech_Research/LLM/AgenticAI/MCP/mcp_intro"
+            ]
+        },
+        "brave-search": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e",
+                "BRAVE_API_KEY",
+                "mcp/brave-search"
+            ],
+            "env": {
+                "BRAVE_API_KEY": "BSAuWtmYcWWllEFboxWruuTb7dR_8p2" 
+            }
+        }
+    } 
+}
